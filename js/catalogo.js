@@ -26,7 +26,7 @@ function mostrarSkeletons() {
 // BY Closet — Catálogo
 // ===================================
 
-const WHATSAPP_NUMBER = '5583986714216';
+var WHATSAPP_NUMBER = (window.BY_CONFIG && window.BY_CONFIG.numero) || '5583986714216';
 const SUPABASE_URL    = 'https://qanmqxyfvlqeadvcjswf.supabase.co';
 const SUPABASE_KEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhbm1xeHlmdmxxZWFkdmNqc3dmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzcyNzQsImV4cCI6MjA4NjkxMzI3NH0.YYgr0HxtYhzekcTa97cu-parCGY0gmSrMQHCA-zL7cw';
 
@@ -47,7 +47,9 @@ function detectarSecao() {
 }
 
 function abrirWhatsApp(nomeProduto, imagemUrl) {
-    const msg = 'Ola! Tenho interesse em conhecer mais sobre esta peca:\n\n*' + nomeProduto + '*\n\nGostaria de saber mais sobre disponibilidade, tamanhos e valores.\n\nImagem: ' + imagemUrl;
+    var msgBase = (window.BY_CONFIG && window.BY_CONFIG.mensagem) || 'Ola! Tenho interesse nesta peca da BY Closet:';
+    var WHATSAPP_NUMBER = (window.BY_CONFIG && window.BY_CONFIG.numero) || '5583986714216';
+    const msg = msgBase + '\n\n*' + nomeProduto + '*\n\nGostaria de saber mais sobre disponibilidade, tamanhos e valores.\n\nImagem: ' + imagemUrl;
     window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
 }
 

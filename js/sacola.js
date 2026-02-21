@@ -353,7 +353,7 @@ function enviarSacolaWhatsApp() {
     const sacola = getSacola();
     if (!sacola.length) return;
 
-    const WHATSAPP_NUMBER = '5583986714216';
+    const WHATSAPP_NUMBER = (window.BY_CONFIG && window.BY_CONFIG.numero) || '5583986714216';
     const SEP = '--------------------';
 
     const lista = sacola.map((item, i) => {

@@ -55,7 +55,7 @@
 
         /* MAIN */
         .main { margin-left: var(--sidebar); flex: 1; display: flex; flex-direction: column; }
-        .topbar { background: var(--white); padding: 1.25rem 2.5rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--beige-mid); position: sticky; top: 0; z-index: 50; }
+        .topbar { background: var(--white); padding: 1.25rem 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--beige-mid); position: sticky; top: 0; z-index: 50; }
         .topbar h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; }
         .topbar-actions { display: flex; gap: 1rem; align-items: center; }
 
@@ -189,23 +189,20 @@
         /* Botão hambúrguer para abrir sidebar no mobile */
         .mobile-nav-toggle {
             display: none;
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            z-index: 300;
-            background: var(--white);
+            background: var(--beige);
             border: none;
             border-radius: 10px;
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: var(--shadow);
             flex-direction: column;
             gap: 5px;
             padding: 10px;
+            flex-shrink: 0;
         }
+        .mobile-nav-toggle:hover { background: var(--beige-mid); }
         .mobile-nav-toggle span {
             display: block;
             width: 20px;
@@ -254,12 +251,17 @@
                 margin-left: 0;
             }
 
-            /* Topbar com espaço para o toggle */
+            /* Topbar mobile */
             .topbar {
-                padding: 1rem 1.25rem 1rem 4rem;
+                padding: 0.9rem 1rem;
+                gap: 0.75rem;
             }
             .topbar h2 {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
+                flex: 1;
+            }
+            .mobile-nav-toggle {
+                display: flex;
             }
 
             /* Content com padding menor */
@@ -357,10 +359,10 @@
 
             /* Topbar compacto */
             .topbar {
-                padding: 0.9rem 1rem 0.9rem 3.5rem;
+                padding: 0.75rem 0.85rem;
             }
             .topbar h2 {
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
 
             /* Content */
@@ -387,9 +389,6 @@
 </head>
 <body>
 
-<button class="mobile-nav-toggle" id="mobileNavToggle" onclick="toggleSidebar()" aria-label="Menu">
-    <span></span><span></span><span></span>
-</button>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="fecharSidebar()"></div>
 
 <aside class="sidebar" id="adminSidebar">
@@ -440,6 +439,9 @@
 
 <main class="main">
     <div class="topbar">
+        <button class="mobile-nav-toggle" id="mobileNavToggle" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
         <h2 id="pageTitle">Visão Geral</h2>
         <div class="topbar-actions">
             <button class="btn-primary" id="btnNovo" onclick="abrirModalNovo()" style="display:none">
@@ -1041,7 +1043,12 @@ function removerImagem(index) {
 async function salvarProduto() {
     const nome = document.getElementById('formNome').value.trim();
     const categoria = document.getElementById('formCategoria').value;
-    const secao = document.getElementById('formSecao').value;
+    var secao = document.getElementById('formSecao').value;
+    const isDestaque = document.getElementById('formDestaque').checked;
+    if (isDestaque && secao !== 'destaques') {
+        secao = 'destaques';
+        document.getElementById('formSecao').value = 'destaques';
+    }
 
     if (!nome || !categoria || !secao) {
         mostrarToast('Preencha Nome, Categoria e Seção!', 'error');
@@ -1184,11 +1191,39 @@ function renderizarTags(tipo) {
 // CONFIG
 // ===================================
 function salvarConfig(tipo) {
-    mostrarToast('✅ Configurações salvas!', 'success');
+    if (tipo === 'whatsapp') {
+        const numero = document.getElementById('configWhatsapp').value.replace(/\D/g, '');
+        const mensagem = document.getElementById('configMensagem').value;
+        localStorage.setItem('by_whatsapp_numero', numero);
+        localStorage.setItem('by_whatsapp_mensagem', mensagem);
+    }
+    if (tipo === 'loja') {
+        const nome = document.getElementById('configNomeLoja').value;
+        const instagram = document.getElementById('configInstagram').value;
+        const email = document.getElementById('configEmail').value;
+        localStorage.setItem('by_loja_nome', nome);
+        localStorage.setItem('by_loja_instagram', instagram);
+        localStorage.setItem('by_loja_email', email);
+    }
+    mostrarToast('✅ Configurações salvas! Atualize a página do site para ver.', 'success');
     const badge = document.getElementById('badge-' + tipo);
     badge.classList.add('show');
     setTimeout(() => badge.classList.remove('show'), 3000);
 }
+
+// Carregar configs salvas nos inputs ao iniciar
+(function carregarConfigsSalvas() {
+    const numero = localStorage.getItem('by_whatsapp_numero');
+    const mensagem = localStorage.getItem('by_whatsapp_mensagem');
+    const nome = localStorage.getItem('by_loja_nome');
+    const instagram = localStorage.getItem('by_loja_instagram');
+    const email = localStorage.getItem('by_loja_email');
+    if (numero) document.getElementById('configWhatsapp').value = numero;
+    if (mensagem) document.getElementById('configMensagem').value = mensagem;
+    if (nome) document.getElementById('configNomeLoja').value = nome;
+    if (instagram) document.getElementById('configInstagram').value = instagram;
+    if (email) document.getElementById('configEmail').value = email;
+})();
 
 // ===================================
 // TOAST
@@ -1207,6 +1242,21 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
 
 // Inicializar
 init();
+
+// Sincronizar checkbox "Em Destaque" com seção
+document.getElementById('formDestaque').addEventListener('change', function() {
+    const secaoSelect = document.getElementById('formSecao');
+    if (this.checked) {
+        secaoSelect.value = 'destaques';
+    }
+});
+
+// Ao mudar secao, desmarcar destaque se sair de destaques
+document.getElementById('formSecao').addEventListener('change', function() {
+    if (this.value !== 'destaques') {
+        document.getElementById('formDestaque').checked = false;
+    }
+});
 </script>
 
     <script>

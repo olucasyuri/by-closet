@@ -2,7 +2,7 @@
 // BY Closet - Produto
 // ===================================
 
-const WHATSAPP_NUMBER = '5583986714216';
+var WHATSAPP_NUMBER = (window.BY_CONFIG && window.BY_CONFIG.numero) || '5583986714216';
 const SUPABASE_URL    = 'https://qanmqxyfvlqeadvcjswf.supabase.co';
 const SUPABASE_KEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhbm1xeHlmdmxxZWFkdmNqc3dmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzcyNzQsImV4cCI6MjA4NjkxMzI3NH0.YYgr0HxtYhzekcTa97cu-parCGY0gmSrMQHCA-zL7cw';
 
@@ -191,7 +191,9 @@ function enviarWhatsApp() {
     var linhaCor   = corSelecionada     ? '\n   Cor: *' + corSelecionada + '*'         : '';
     var linhaPreco = (produtoAtual.preco && produtoAtual.secao !== 'destaques')
                    ? '\n   Valor: R$ ' + parseFloat(produtoAtual.preco).toFixed(2).replace('.', ',') : '';
-    var msg = 'Ola! Tenho interesse nesta peca:\n\n*' + produtoAtual.nome + '*'
+    var msgBase = (window.BY_CONFIG && window.BY_CONFIG.mensagem) || 'Ola! Tenho interesse nesta peca da BY Closet:';
+    var WHATSAPP_NUMBER = (window.BY_CONFIG && window.BY_CONFIG.numero) || '5583986714216';
+    var msg = msgBase + '\n\n*' + produtoAtual.nome + '*'
             + linhaTam + linhaCor + linhaPreco
             + '\n   Ref: ' + (produtoAtual.referencia || produtoAtual.id)
             + '\n\nGostaria de confirmar disponibilidade e formas de pagamento.'
