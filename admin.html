@@ -181,11 +181,218 @@
         .empty-state { text-align: center; padding: 4rem 2rem; color: var(--text-soft); grid-column: 1/-1; }
         .empty-state svg { margin-bottom: 1rem; opacity: 0.4; }
         .empty-state h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+
+        /* ===================================
+           RESPONSIVO MOBILE — ADMIN
+           =================================== */
+
+        /* Botão hambúrguer para abrir sidebar no mobile */
+        .mobile-nav-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 300;
+            background: var(--white);
+            border: none;
+            border-radius: 10px;
+            width: 42px;
+            height: 42px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+        }
+        .mobile-nav-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(2px);
+            z-index: 149;
+        }
+
+        /* Imagens dos previews menores no mobile */
+        .imagens-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        @media (max-width: 900px) {
+            /* Sidebar vira drawer lateral */
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 200;
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-overlay.open {
+                display: block;
+            }
+            .mobile-nav-toggle {
+                display: flex;
+            }
+
+            /* Main ocupa tudo */
+            .main {
+                margin-left: 0;
+            }
+
+            /* Topbar com espaço para o toggle */
+            .topbar {
+                padding: 1rem 1.25rem 1rem 4rem;
+            }
+            .topbar h2 {
+                font-size: 1.3rem;
+            }
+
+            /* Content com padding menor */
+            .content {
+                padding: 1.25rem;
+            }
+
+            /* Stats: 2 colunas */
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            .stat-card {
+                padding: 1.25rem;
+            }
+            .stat-value {
+                font-size: 2rem;
+            }
+
+            /* Cards de produto: 2 colunas */
+            .produtos-admin-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            /* Modal ocupa mais espaço */
+            .modal-overlay {
+                padding: 0.5rem;
+                align-items: flex-end;
+            }
+            .modal {
+                max-height: 95vh;
+                border-radius: 18px 18px 0 0;
+            }
+            .modal-header {
+                padding: 1.25rem 1.25rem;
+            }
+            .modal-body {
+                padding: 1.25rem;
+            }
+            .modal-footer {
+                padding: 1rem 1.25rem;
+            }
+
+            /* Form: 1 coluna */
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full {
+                grid-column: 1;
+            }
+
+            /* Topbar actions */
+            .topbar-actions .btn-primary span {
+                display: none;
+            }
+
+            /* Section header */
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+            .search-input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Stats: 1 coluna */
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            .stat-card {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: 1rem 1.25rem;
+            }
+            .stat-icon {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+            .stat-value {
+                font-size: 1.8rem;
+                margin-bottom: 0.1rem;
+            }
+
+            /* Cards: 1 coluna */
+            .produtos-admin-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Topbar compacto */
+            .topbar {
+                padding: 0.9rem 1rem 0.9rem 3.5rem;
+            }
+            .topbar h2 {
+                font-size: 1.1rem;
+            }
+
+            /* Content */
+            .content {
+                padding: 1rem;
+            }
+
+            /* Modal footer botões empilhados */
+            .modal-footer {
+                flex-direction: column-reverse;
+            }
+            .modal-footer button {
+                width: 100%;
+                justify-content: center;
+                padding: 0.9rem;
+            }
+
+            /* Config cards */
+            .config-card {
+                padding: 1.25rem;
+            }
+        }
     </style>
 </head>
 <body>
 
-<aside class="sidebar">
+<button class="mobile-nav-toggle" id="mobileNavToggle" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="fecharSidebar()"></div>
+
+<aside class="sidebar" id="adminSidebar">
     <div class="sidebar-brand">
         <h1><span>BY</span> Closet</h1>
         <p>Painel Administrativo</p>
@@ -1001,5 +1208,33 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
 // Inicializar
 init();
 </script>
+
+    <script>
+    // ── Sidebar mobile toggle ──
+    function toggleSidebar() {
+        var sidebar  = document.getElementById('adminSidebar');
+        var overlay  = document.getElementById('sidebarOverlay');
+        var isOpen   = sidebar.classList.contains('open');
+        if (isOpen) {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        } else {
+            sidebar.classList.add('open');
+            overlay.classList.add('open');
+        }
+    }
+    function fecharSidebar() {
+        document.getElementById('adminSidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+
+    // Fechar sidebar ao navegar (mobile)
+    var origNavegar = typeof navegarPara === 'function' ? navegarPara : null;
+    document.querySelectorAll('.nav-item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            if (window.innerWidth <= 900) fecharSidebar();
+        });
+    });
+    </script>
 </body>
 </html>
