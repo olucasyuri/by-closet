@@ -1,0 +1,68 @@
+# ===================================
+# BY Closet - .gitignore
+# ===================================
+
+# Arquivos do Sistema Operacional
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editores e IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
+
+# Node Modules (caso adicione npm futuramente)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Arquivos de Build (caso use bundlers futuramente)
+dist/
+build/
+.cache/
+.parcel-cache/
+
+# Arquivos de Ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+
+# Backups
+*.bak
+*.backup
+*.old
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Coverage (caso adicione testes futuramente)
+coverage/
+*.lcov
+.nyc_output/
+
+# Misc
+.sass-cache/
+*.css.map
+*.js.map

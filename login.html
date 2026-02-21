@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — BY Closet Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f5f0eb 0%, #e8ddd3 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 420px;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #2c2c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo h1 span {
+            color: #d4a5a5;
+            font-weight: 600;
+        }
+
+        .logo p {
+            font-size: 0.85rem;
+            color: #6b6b6b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #6b6b6b;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e8ddd3;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #d4a5a5;
+            box-shadow: 0 0 0 3px rgba(212, 165, 165, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: #d4a5a5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-login:hover {
+            background: #c08a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 165, 165, 0.4);
+        }
+
+        .btn-login:disabled {
+            background: #e8ddd3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: center;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .info-box {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: #6b6b6b;
+            line-height: 1.6;
+        }
+
+        .info-box strong {
+            color: #2c2c2c;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link a {
+            color: #d4a5a5;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: #c08a8a;
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .logo h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1><span>BY</span> Closet</h1>
+            <p>Painel Administrativo</p>
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            Senha incorreta. Tente novamente.
+        </div>
+
+        <form id="loginForm" onsubmit="fazerLogin(event)">
+            <div class="form-group">
+                <label for="senha">Senha de Acesso</label>
+                <input 
+                    type="password" 
+                    id="senha" 
+                    placeholder="Digite sua senha"
+                    autocomplete="current-password"
+                    required
+                    autofocus
+                >
+            </div>
+
+            <button type="submit" class="btn-login" id="btnLogin">
+                Entrar no Painel
+            </button>
+        </form>
+
+        <div class="info-box">
+            <strong>⚠️ Primeira vez aqui?</strong><br>
+            A senha padrão é: <strong>bycloset2026</strong><br>
+            (Altere no código depois)
+        </div>
+
+        <div class="back-link">
+            <a href="index.html">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"/>
+                    <polyline points="12 19 5 12 12 5"/>
+                </svg>
+                Voltar ao site
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // ⚠️ MUDE ESTA SENHA!
+        const SENHA_ADMIN = 'bycloset2026';
+
+        function fazerLogin(event) {
+            event.preventDefault();
+            
+            const senha = document.getElementById('senha').value;
+            const errorMsg = document.getElementById('errorMessage');
+            const btn = document.getElementById('btnLogin');
+
+            btn.disabled = true;
+            btn.textContent = 'Verificando...';
+
+            setTimeout(() => {
+                if (senha === SENHA_ADMIN) {
+                    // Salvar sessão
+                    sessionStorage.setItem('bycloset_admin_auth', 'true');
+                    
+                    // Redirecionar
+                    window.location.href = 'admin.html';
+                } else {
+                    // Erro
+                    errorMsg.classList.add('show');
+                    document.getElementById('senha').value = '';
+                    document.getElementById('senha').focus();
+                    
+                    setTimeout(() => {
+                        errorMsg.classList.remove('show');
+                    }, 3000);
+                }
+                
+                btn.disabled = false;
+                btn.textContent = 'Entrar no Painel';
+            }, 500);
+        }
+
+        // Verificar se já está logado
+        if (sessionStorage.getItem('bycloset_admin_auth') === 'true') {
+            window.location.href = 'admin.html';
+        }
+    </script>
+</body>
+</html>

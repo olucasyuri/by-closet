@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BY Closet — Moda feminina com elegância e sofisticação. Peças exclusivas, atemporais e de alta qualidade para realçar seu estilo.">
+    <title>BY Closet - Moda Feminina</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <span>BY</span> Closet
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Bem-Vinda</a></li>
+                <li><a href="#loja">Coleção</a></li>
+                <li><a href="#sobre">Essência</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <div class="nav-acoes">
+                <button class="sacola-icon-btn" aria-label="Abrir sacola" onclick="abrirSacola()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="sacola-count">0</span>
+                </button>
+            </div>
+            <div class="mobile-menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Feito para<br>realçar<br>seu estilo</h1>
+                <p>Descubra peças exclusivas que traduzem elegância e sofisticação</p>
+                <a href="#loja" class="cta-button">VER COLEÇÃO</a>
+            </div>
+            <div class="hero-image">
+                <div class="hero-image-container">
+                    <!-- Adicione ou remova <img> aqui para controlar quantas fotos aparecem -->
+                    <img class="hero-slide active" src="images/imagem.png" alt="Moda Feminina Elegante 1">
+                    <img class="hero-slide" src="images/imagem.png" alt="Moda Feminina Elegante 2">
+                    <img class="hero-slide" src="images/imagem.png" alt="Moda Feminina Elegante 3">
+                    <img class="hero-slide" src="images/imagem.png" alt="Moda Feminina Elegante 4">
+                </div>
+            </div>
+        </div>
+        <div class="carousel-dots" id="carouselDots">
+            <!-- Bolinhas geradas automaticamente pelo JavaScript -->
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories" id="loja">
+        <div class="category-grid">
+            <a href="pecas.html" class="category-card reveal" style="text-decoration: none; color: inherit;">
+                <img src="https://images.unsplash.com/photo-1687226426209-0e5d2143c0d1?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Peças">
+                <div class="category-overlay">
+                    <h3>Peças</h3>
+                    <p>Explore</p>
+                </div>
+            </a>
+            <a href="destaques.html" class="category-card reveal" style="text-decoration: none; color: inherit;">
+                <img src="https://plus.unsplash.com/premium_photo-1675186049406-3fabe5f387eb?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Destaques">
+                <div class="category-overlay">
+                    <h3>Destaques</h3>
+                    <p>Explore</p>
+                </div>
+            </a>
+            <a href="extras.html" class="category-card reveal" style="text-decoration: none; color: inherit;">
+                <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?q=80&w=388&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Extras">
+                <div class="category-overlay">
+                    <h3>Extras</h3>
+                    <p>Explore</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="sobre">
+        <div class="about-content">
+            <div class="about-text reveal">
+                <h2>Sobre o Closet</h2>
+                <p>A BY Closet é um espaço dedicado à mulher que busca elegância sem abrir mão do conforto. Trabalhamos com peças versáteis, atemporais e de alta qualidade que se adaptam ao seu estilo de vida.</p>
+                <p>Nossa curadoria privilegia tecidos nobres, modelagens impecáveis e designs que resistem às tendências passageiras. Porque acreditamos que verdadeiro estilo é atemporal.</p>
+            </div>
+            <div class="about-image reveal">
+                <img src="https://plus.unsplash.com/premium_photo-1664202526559-e21e9c0fb46a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Sobre BY Closet">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><span style="font-weight: 600;">BY</span> Closet</h3>
+                <p>Elegância e sofisticação em cada detalhe. Descubra a moda que realça sua personalidade.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Atendimento</h3>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <span>(83) 98671-4216</span>
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <span>contato@bycloset.com</span>
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span>@BYCLOSET.CO</span>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Links Úteis</h3>
+                <a href="#sobre">Sobre nós</a>
+                <a href="#loja">Catálogo</a>
+                <a href="#" onclick="event.preventDefault(); abrirModal('privacidade')">Política de Privacidade</a>
+                <a href="#" onclick="event.preventDefault(); abrirModal('trocas')">Trocas e Devoluções</a>
+                <a href="#" onclick="event.preventDefault(); abrirModal('pagamento')">Formas de Pagamento</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 BY Closet. Todos os direitos reservados. | Desenvolvido por BY Closet.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/sacola.js"></script>
+    <script src="js/modais.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Atalho secreto: 7 cliques no logo abre o admin
+        let clickCount = 0;
+        let clickTimer = null;
+        
+        document.querySelector('.logo').addEventListener('click', function(e) {
+            clickCount++;
+            
+            if (clickCount === 1) {
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 3000); // Reset após 3 segundos
+            }
+            
+            if (clickCount === 7) {
+                clearTimeout(clickTimer);
+                clickCount = 0;
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>

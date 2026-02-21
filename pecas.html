@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Peças BY Closet — Explore nossa coleção de blusas, vestidos, saias e muito mais. Moda feminina exclusiva com qualidade e elegância.">
+    <title>Peças - BY Closet</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/catalogo.css">
+    
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <span>BY</span> Closet
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#home">Bem-Vinda</a></li>
+                <li><a href="index.html#loja">Coleção</a></li>
+                <li><a href="index.html#sobre">Essência</a></li>
+                <li><a href="index.html#contato">Contato</a></li>
+            </ul>
+            <div class="nav-acoes">
+                <button class="sacola-icon-btn" aria-label="Abrir sacola" onclick="abrirSacola()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="sacola-count">0</span>
+                </button>
+            </div>
+            <div class="mobile-menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <span>Peças</span>
+        </div>
+    </div>
+
+    <!-- Catálogo -->
+    <section class="catalogo">
+        <div class="container">
+            <div class="catalogo-header">
+                <h1>Peças</h1>
+                <p class="catalogo-subtitle">Explore nossa coleção exclusiva</p>
+            </div>
+
+            <div class="catalogo-layout">
+                <!-- Sidebar de Filtros -->
+                <aside class="filtros-sidebar">
+                    <div class="filtros-header">
+                        <h3>Filtros</h3>
+                        <button class="limpar-filtros">Limpar Tudo</button>
+                    </div>
+
+                    <!-- Filtro de Categoria -->
+                    <div class="filtro-grupo">
+                        <h4>Categoria</h4>
+                        <label class="filtro-checkbox">
+                            <input type="checkbox" name="categoria" value="blusas">
+                            <span>Blusas</span>
+                            <span class="count">(12)</span>
+                        </label>
+                        <label class="filtro-checkbox">
+                            <input type="checkbox" name="categoria" value="vestidos">
+                            <span>Vestidos</span>
+                            <span class="count">(8)</span>
+                        </label>
+                        <label class="filtro-checkbox">
+                            <input type="checkbox" name="categoria" value="calcas">
+                            <span>Calças</span>
+                            <span class="count">(15)</span>
+                        </label>
+                        <label class="filtro-checkbox">
+                            <input type="checkbox" name="categoria" value="saias">
+                            <span>Saias</span>
+                            <span class="count">(6)</span>
+                        </label>
+                        <label class="filtro-checkbox">
+                            <input type="checkbox" name="categoria" value="conjuntos">
+                            <span>Conjuntos</span>
+                            <span class="count">(10)</span>
+                        </label>
+                    </div>
+
+                    <!-- Filtro de Tamanho -->
+                    <div class="filtro-grupo">
+                        <h4>Tamanho</h4>
+                        <div class="tamanhos-grid">
+                            <label class="tamanho-btn">
+                                <input type="checkbox" name="tamanho" value="pp">
+                                <span>PP</span>
+                            </label>
+                            <label class="tamanho-btn">
+                                <input type="checkbox" name="tamanho" value="p">
+                                <span>P</span>
+                            </label>
+                            <label class="tamanho-btn">
+                                <input type="checkbox" name="tamanho" value="m">
+                                <span>M</span>
+                            </label>
+                            <label class="tamanho-btn">
+                                <input type="checkbox" name="tamanho" value="g">
+                                <span>G</span>
+                            </label>
+                            <label class="tamanho-btn">
+                                <input type="checkbox" name="tamanho" value="gg">
+                                <span>GG</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Filtro Mobile Toggle -->
+                    <button class="filtros-mobile-toggle" onclick="toggleFiltros()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="4" y1="21" x2="4" y2="14"></line>
+                            <line x1="4" y1="10" x2="4" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="3"></line>
+                            <line x1="20" y1="21" x2="20" y2="16"></line>
+                            <line x1="20" y1="12" x2="20" y2="3"></line>
+                            <line x1="1" y1="14" x2="7" y2="14"></line>
+                            <line x1="9" y1="8" x2="15" y2="8"></line>
+                            <line x1="17" y1="16" x2="23" y2="16"></line>
+                        </svg>
+                        Filtros
+                    </button>
+                </aside>
+
+                <!-- Grid de Produtos -->
+                <div class="produtos-container">
+                        <div class="busca-wrapper">
+                    <svg class="busca-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="search" class="busca-input" placeholder="Buscar produto..." oninput="aplicarBusca(this.value)" aria-label="Buscar produtos">
+                </div>
+            <div class="produtos-toolbar">
+                        <p class="produtos-count">Mostrando <strong>24</strong> de <strong>51</strong> produtos</p>
+                        <select class="ordenar-select">
+                            <option value="relevancia">Mais Relevantes</option>
+                            <option value="novidades">Novidades</option>
+                            <option value="populares">Mais Populares</option>
+                            <option value="nome-az">Nome (A-Z)</option>
+                            <option value="nome-za">Nome (Z-A)</option>
+                        </select>
+                    </div>
+
+                    <div class="produtos-grid" id="produtosGrid">
+                        <!-- Produtos carregados dinamicamente do Supabase -->
+                    </div>
+
+                    <!-- Paginação -->
+                    <div class="paginacao">
+                        <button class="paginacao-btn" disabled>Anterior</button>
+                        <button class="paginacao-numero active">1</button>
+                        <button class="paginacao-numero">2</button>
+                        <button class="paginacao-numero">3</button>
+                        <span class="paginacao-dots">...</span>
+                        <button class="paginacao-numero">8</button>
+                        <button class="paginacao-btn">Próximo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><span style="font-weight: 600;">BY</span> Closet</h3>
+                <p>Elegância e sofisticação em cada detalhe. Descubra a moda que realça sua personalidade.</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/bycloset.co" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Atendimento</h3>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <span>(83) 98671-4216</span>
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <span>contato@bycloset.com</span>
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span>@BYCLOSET.CO</span>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Links Úteis</h3>
+                <a href="index.html#sobre">Sobre nós</a>
+                <a href="index.html#loja">Catálogo</a>
+                <a href="#" onclick="event.preventDefault(); abrirModal('privacidade')">Política de Privacidade</a>
+                <a href="#" onclick="event.preventDefault(); abrirModal('trocas')">Trocas e Devoluções</a>
+                <a href="#" onclick="event.preventDefault(); abrirModal('pagamento')">Formas de Pagamento</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 BY Closet. Todos os direitos reservados. | Desenvolvido por BY Closet.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/modais.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/sacola.js"></script>
+    <script src="js/catalogo.js"></script>
+</body>
+</html>

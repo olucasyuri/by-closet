@@ -1,0 +1,227 @@
+{
+  "produtos": [
+    {
+      "id": "prod-001",
+      "nome": "Vestido Longo Elegante",
+      "descricao": "Vestido longo em tecido fluido premium, perfeito para ocasiões especiais. Corte moderno que valoriza a silhueta com elegância e sofisticação.",
+      "categoria": "vestidos",
+      "imagens": [
+        "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800",
+        "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800",
+        "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800"
+      ],
+      "tamanhos": ["PP", "P", "M", "G", "GG"],
+      "cores": ["Bege", "Preto", "Branco"],
+      "material": "Tecido Fluido Premium",
+      "destaque": true,
+      "novo": false,
+      "emAlta": true,
+      "badge": "Em Destaque",
+      "detalhes": [
+        "Tecido respirável e confortável",
+        "Caimento moderno e elegante",
+        "Ideal para eventos especiais",
+        "Disponível em várias cores"
+      ]
+    },
+    {
+      "id": "prod-002",
+      "nome": "Blusa Cropped Casual",
+      "descricao": "Blusa cropped em malha macia, ideal para o dia a dia. Combina conforto e estilo em uma peça versátil.",
+      "categoria": "blusas",
+      "imagens": [
+        "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800",
+        "https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=800"
+      ],
+      "tamanhos": ["P", "M", "G"],
+      "cores": ["Rose", "Bege", "Azul"],
+      "material": "Malha Premium",
+      "destaque": true,
+      "novo": true,
+      "emAlta": false,
+      "badge": "Novo",
+      "detalhes": [
+        "Malha macia e confortável",
+        "Corte cropped moderno",
+        "Perfeito para looks casuais",
+        "Fácil de combinar"
+      ]
+    },
+    {
+      "id": "prod-003",
+      "nome": "Calça Wide Leg Alfaiataria",
+      "descricao": "Calça wide leg em alfaiataria premium, elegância garantida. Corte sofisticado que alonga a silhueta.",
+      "categoria": "calcas",
+      "imagens": [
+        "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800",
+        "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800"
+      ],
+      "tamanhos": ["36", "38", "40", "42", "44"],
+      "cores": ["Preto", "Marrom", "Bege"],
+      "material": "Alfaiataria Premium",
+      "destaque": false,
+      "novo": false,
+      "emAlta": true,
+      "badge": null,
+      "detalhes": [
+        "Tecido de alfaiataria premium",
+        "Corte wide leg elegante",
+        "Cintura alta modeladora",
+        "Versatilidade para diversos looks"
+      ]
+    },
+    {
+      "id": "prod-004",
+      "nome": "Conjunto Linho Natural",
+      "descricao": "Conjunto exclusivo em linho natural, perfeito para o verão. Combinação de conforto e estilo em uma peça versátil e atemporal.",
+      "categoria": "conjuntos",
+      "imagens": [
+        "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800",
+        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800"
+      ],
+      "tamanhos": ["P", "M", "G"],
+      "cores": ["Natural", "Branco", "Areia"],
+      "material": "100% Linho",
+      "destaque": true,
+      "novo": false,
+      "emAlta": true,
+      "badge": "Exclusivo",
+      "detalhes": [
+        "100% linho natural",
+        "Edição limitada",
+        "Sustentável e respirável",
+        "Conjunto completo (blusa + calça)"
+      ]
+    },
+    {
+      "id": "prod-005",
+      "nome": "Saia Midi Plissada",
+      "descricao": "Saia midi plissada, versatilidade para diversos looks. Elegância atemporal em uma peça essencial.",
+      "categoria": "saias",
+      "imagens": [
+        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800",
+        "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800"
+      ],
+      "tamanhos": ["PP", "P", "M", "G"],
+      "cores": ["Bege", "Preto", "Azul Marinho"],
+      "material": "Crepe Plissado",
+      "destaque": false,
+      "novo": false,
+      "emAlta": false,
+      "badge": null,
+      "detalhes": [
+        "Plissado permanente",
+        "Comprimento midi elegante",
+        "Cintura elástica confortável",
+        "Combina com diversas blusas"
+      ]
+    },
+    {
+      "id": "prod-006",
+      "nome": "Blazer Oversized Premium",
+      "descricao": "Blazer oversized em alfaiataria premium. Corte moderno e estruturado, ideal para compor looks elegantes e contemporâneos.",
+      "categoria": "blazers",
+      "imagens": [
+        "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800",
+        "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800"
+      ],
+      "tamanhos": ["P", "M", "G", "GG"],
+      "cores": ["Preto", "Bege", "Marrom"],
+      "material": "Alfaiataria Estruturada",
+      "destaque": true,
+      "novo": true,
+      "emAlta": true,
+      "badge": "Novo",
+      "detalhes": [
+        "Corte oversized moderno",
+        "Alfaiataria impecável",
+        "Ombros estruturados",
+        "Versatilidade para dia e noite"
+      ]
+    },
+    {
+      "id": "prod-007",
+      "nome": "Vestido Midi Floral",
+      "descricao": "Vestido midi com estampa floral delicada. Romântico e feminino, perfeito para diversas ocasiões.",
+      "categoria": "vestidos",
+      "imagens": [
+        "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800",
+        "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800"
+      ],
+      "tamanhos": ["P", "M", "G"],
+      "cores": ["Floral Bege", "Floral Azul"],
+      "material": "Viscose Premium",
+      "destaque": false,
+      "novo": true,
+      "emAlta": false,
+      "badge": "Novo",
+      "detalhes": [
+        "Estampa floral exclusiva",
+        "Tecido leve e fluido",
+        "Amarração na cintura",
+        "Comprimento midi elegante"
+      ]
+    },
+    {
+      "id": "prod-008",
+      "nome": "Calça Jogger Confort",
+      "descricao": "Calça jogger em moletom premium. Conforto absoluto sem abrir mão do estilo.",
+      "categoria": "calcas",
+      "imagens": [
+        "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800",
+        "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800"
+      ],
+      "tamanhos": ["P", "M", "G", "GG"],
+      "cores": ["Preto", "Cinza", "Bege"],
+      "material": "Moletom Premium",
+      "destaque": false,
+      "novo": false,
+      "emAlta": true,
+      "badge": null,
+      "detalhes": [
+        "Moletom de alta qualidade",
+        "Corte jogger moderno",
+        "Cintura com elástico e cordão",
+        "Bolsos funcionais"
+      ]
+    }
+  ],
+  "categorias": [
+    {
+      "id": "vestidos",
+      "nome": "Vestidos",
+      "descricao": "Vestidos elegantes para todas as ocasiões",
+      "icone": "👗"
+    },
+    {
+      "id": "blusas",
+      "nome": "Blusas",
+      "descricao": "Blusas versáteis e modernas",
+      "icone": "👚"
+    },
+    {
+      "id": "calcas",
+      "nome": "Calças",
+      "descricao": "Calças confortáveis e estilosas",
+      "icone": "👖"
+    },
+    {
+      "id": "saias",
+      "nome": "Saias",
+      "descricao": "Saias femininas e elegantes",
+      "icone": "🩱"
+    },
+    {
+      "id": "conjuntos",
+      "nome": "Conjuntos",
+      "descricao": "Conjuntos práticos e coordenados",
+      "icone": "👔"
+    },
+    {
+      "id": "blazers",
+      "nome": "Blazers",
+      "descricao": "Blazers sofisticados",
+      "icone": "🧥"
+    }
+  ]
+}

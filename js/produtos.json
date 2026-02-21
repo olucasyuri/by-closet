@@ -1,0 +1,196 @@
+
+{
+  "produtos": [
+    {
+      "id": "prod-001",
+      "nome": "Vestido Longo Elegante",
+      "categoria": "vestidos",
+      "descricao": "Vestido longo em tecido fluido premium, perfeito para ocasiões especiais.",
+      "imagens": [
+        "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800"
+      ],
+      "tamanhos": [
+        "PP",
+        "P",
+        "M",
+        "G",
+        "GG"
+      ],
+      "cores": [
+        "Bege",
+        "Preto",
+        "Branco"
+      ],
+      "material": "Tecido Fluido Premium",
+      "destaque": true,
+      "novo": false,
+      "badge": "Em Destaque"
+    },
+    {
+      "id": "prod-002",
+      "nome": "Blusa Cropped Casual",
+      "categoria": "blusas",
+      "descricao": "Blusa cropped em malha macia, ideal para o dia a dia.",
+      "imagens": [
+        "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800"
+      ],
+      "tamanhos": [
+        "P",
+        "M",
+        "G"
+      ],
+      "cores": [
+        "Rose",
+        "Bege",
+        "Azul"
+      ],
+      "material": "Malha Premium",
+      "destaque": true,
+      "novo": true,
+      "badge": "Novo"
+    },
+    {
+      "id": "prod-003",
+      "nome": "Calça Wide Leg Alfaiataria",
+      "categoria": "calcas",
+      "descricao": "Calça wide leg em alfaiataria premium, elegância garantida.",
+      "imagens": [
+        "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800"
+      ],
+      "tamanhos": [
+        "36",
+        "38",
+        "40",
+        "42",
+        "44"
+      ],
+      "cores": [
+        "Preto",
+        "Marrom",
+        "Bege"
+      ],
+      "material": "Alfaiataria Premium",
+      "destaque": false,
+      "novo": false,
+      "badge": null
+    },
+    {
+      "id": "prod-004",
+      "nome": "Conjunto Linho Natural",
+      "categoria": "conjuntos",
+      "descricao": "Conjunto exclusivo em linho natural, perfeito para o verão.",
+      "imagens": [
+        "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800"
+      ],
+      "tamanhos": [
+        "P",
+        "M",
+        "G"
+      ],
+      "cores": [
+        "Natural",
+        "Branco",
+        "Areia"
+      ],
+      "material": "100% Linho",
+      "destaque": true,
+      "novo": false,
+      "badge": "Exclusivo"
+    },
+    {
+      "id": "prod-005",
+      "nome": "Saia Midi Plissada",
+      "categoria": "saias",
+      "descricao": "Saia midi plissada, versatilidade para diversos looks.",
+      "imagens": [
+        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800"
+      ],
+      "tamanhos": [
+        "PP",
+        "P",
+        "M",
+        "G"
+      ],
+      "cores": [
+        "Bege",
+        "Preto",
+        "Azul Marinho"
+      ],
+      "material": "Crepe Plissado",
+      "destaque": false,
+      "novo": false,
+      "badge": null
+    },
+    {
+      "id": "prod-006",
+      "nome": "Blazer Oversized Premium",
+      "categoria": "blazers",
+      "descricao": "Blazer oversized em alfaiataria premium, looks elegantes.",
+      "imagens": [
+        "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800"
+      ],
+      "tamanhos": [
+        "P",
+        "M",
+        "G",
+        "GG"
+      ],
+      "cores": [
+        "Preto",
+        "Bege",
+        "Marrom"
+      ],
+      "material": "Alfaiataria Estruturada",
+      "destaque": true,
+      "novo": true,
+      "badge": "Novo"
+    },
+    {
+      "id": "prod-007",
+      "nome": "Vestido Midi Floral",
+      "categoria": "vestidos",
+      "descricao": "Vestido midi com estampa floral delicada.",
+      "imagens": [
+        "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800"
+      ],
+      "tamanhos": [
+        "P",
+        "M",
+        "G"
+      ],
+      "cores": [
+        "Floral Bege",
+        "Floral Azul"
+      ],
+      "material": "Viscose Premium",
+      "destaque": false,
+      "novo": true,
+      "badge": "Novo"
+    },
+    {
+      "id": "prod-008",
+      "nome": "Calça Jogger Confort",
+      "categoria": "calcas",
+      "descricao": "Calça jogger em moletom premium. Conforto com estilo.",
+      "imagens": [
+        "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800"
+      ],
+      "tamanhos": [
+        "P",
+        "M",
+        "G",
+        "GG"
+      ],
+      "cores": [
+        "Preto",
+        "Cinza",
+        "Bege"
+      ],
+      "material": "Moletom Premium",
+      "destaque": false,
+      "novo": false,
+      "badge": null
+    }
+  ]
+  
+}
