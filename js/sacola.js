@@ -261,7 +261,97 @@ function criarDrawer() {
                 font-family:'Montserrat',sans-serif;
             }
 
-            @media (max-width: 600px) {
+    
+        /* ── Modal de entrega ── */
+        #modalEntrega {
+            position: fixed; inset: 0; z-index: 99999;
+            display: flex; align-items: flex-end; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.25s;
+        }
+        #modalEntrega.aberto {
+            opacity: 1; pointer-events: all;
+        }
+        #modalEntrega .me-overlay {
+            position: absolute; inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+        }
+        #modalEntrega .me-box {
+            position: relative; z-index: 1;
+            background: #fff;
+            border-radius: 20px 20px 0 0;
+            width: min(560px, 100vw);
+            max-height: 92svh;
+            overflow-y: auto;
+            padding: 0;
+            box-shadow: 0 -8px 40px rgba(0,0,0,0.15);
+            transform: translateY(30px);
+            transition: transform 0.3s cubic-bezier(.2,.8,.4,1);
+        }
+        #modalEntrega.aberto .me-box {
+            transform: translateY(0);
+        }
+        .me-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.4rem 1.5rem 1rem;
+            border-bottom: 1px solid #f0ebe5;
+            position: sticky; top: 0; background: #fff; z-index: 2;
+        }
+        .me-header h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem; font-weight: 400; color: #2c2c2c; margin: 0;
+        }
+        .me-fechar {
+            background: #f5f0eb; border: none; border-radius: 50%;
+            width: 32px; height: 32px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: #888; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .me-fechar:hover { background: #e8ddd3; }
+        .me-body { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.85rem; }
+        .me-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        .me-grupo { display: flex; flex-direction: column; gap: 0.3rem; }
+        .me-grupo label {
+            font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.5px; color: #888;
+        }
+        .me-grupo input {
+            padding: 0.75rem 0.9rem;
+            border: 1.5px solid #e8ddd3; border-radius: 10px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.9rem;
+            color: #2c2c2c; outline: none; background: #fff;
+            transition: border-color 0.2s;
+        }
+        .me-grupo input:focus { border-color: #d4a5a5; }
+        .me-grupo input::placeholder { color: #c4b5af; }
+        .me-grupo.full { grid-column: 1 / -1; }
+        .me-obrigatorio { color: #d4a5a5; }
+        .me-footer {
+            padding: 1rem 1.5rem 1.5rem;
+            border-top: 1px solid #f0ebe5;
+            display: flex; flex-direction: column; gap: 0.6rem;
+        }
+        .me-btn-enviar {
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            background: #25D366; color: #fff; border: none; border-radius: 50px;
+            padding: 1rem; font-size: 0.95rem; font-weight: 600;
+            font-family: 'Montserrat', sans-serif; cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            min-height: 52px;
+        }
+        .me-btn-enviar:hover { background: #1ebe5a; transform: translateY(-1px); }
+        .me-btn-voltar {
+            background: none; border: none; color: #aaa;
+            font-size: 0.82rem; cursor: pointer; text-align: center;
+            font-family: inherit; padding: 0.25rem;
+        }
+        .me-btn-voltar:hover { color: #888; }
+        @media (max-width: 480px) {
+            .me-row { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
                 #sacolaDrawer { width:100vw; border-radius:0; }
                 .sacola-header { padding:1.25rem; }
                 .sacola-itens { padding:0.75rem 1rem; }
@@ -336,7 +426,7 @@ function renderizarPainelSacola() {
         </div>
         <p class="sacola-total-itens">${totalItens} ${totalItens === 1 ? 'item' : 'itens'} na sacola</p>
         ` : `<p class="sacola-total-itens">${totalItens} ${totalItens === 1 ? 'item' : 'itens'} na sacola</p>`}
-        <button class="btn-enviar-sacola" onclick="enviarSacolaWhatsApp()">
+        <button class="btn-enviar-sacola" onclick="abrirModalEntrega()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
             </svg>
@@ -349,18 +439,128 @@ function renderizarPainelSacola() {
 // ===================================
 // ENVIAR PARA WHATSAPP
 // ===================================
-function enviarSacolaWhatsApp() {
+// ── Modal de entrega ──────────────────────────────
+function abrirModalEntrega() {
+    const sacola = getSacola();
+    if (!sacola.length) return;
+
+    // Criar modal se não existir
+    if (!document.getElementById('modalEntrega')) {
+        const m = document.createElement('div');
+        m.id = 'modalEntrega';
+        m.innerHTML =
+            '<div class="me-overlay" onclick="fecharModalEntrega()"></div>' +
+            '<div class="me-box">' +
+                '<div class="me-header">' +
+                    '<h3>Dados para Entrega</h3>' +
+                    '<button class="me-fechar" onclick="fecharModalEntrega()">×</button>' +
+                '</div>' +
+                '<div class="me-body">' +
+                    '<div class="me-row">' +
+                        '<div class="me-grupo">' +
+                            '<label>Nome <span class="me-obrigatorio">*</span></label>' +
+                            '<input id="meNome" type="text" placeholder="Seu nome">' +
+                        '</div>' +
+                        '<div class="me-grupo">' +
+                            '<label>Sobrenome <span class="me-obrigatorio">*</span></label>' +
+                            '<input id="meSobrenome" type="text" placeholder="Seu sobrenome">' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="me-grupo full">' +
+                        '<label>Endereço (Rua / Av.) <span class="me-obrigatorio">*</span></label>' +
+                        '<input id="meEndereco" type="text" placeholder="Ex: Rua das Flores, 123">' +
+                    '</div>' +
+                    '<div class="me-row">' +
+                        '<div class="me-grupo">' +
+                            '<label>CEP <span class="me-obrigatorio">*</span></label>' +
+                            '<input id="meCep" type="text" placeholder="00000-000" maxlength="9" oninput="mascararCep(this)">' +
+                        '</div>' +
+                        '<div class="me-grupo">' +
+                            '<label>Número <span class="me-obrigatorio">*</span></label>' +
+                            '<input id="meNumero" type="text" placeholder="Ex: 42">' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="me-grupo full">' +
+                        '<label>Complemento</label>' +
+                        '<input id="meComplemento" type="text" placeholder="Ex: Apto 3, Bloco B">' +
+                    '</div>' +
+                    '<div class="me-grupo full">' +
+                        '<label>Ponto de Referência</label>' +
+                        '<input id="meReferencia" type="text" placeholder="Ex: Próximo ao mercado X">' +
+                    '</div>' +
+                '</div>' +
+                '<div class="me-footer">' +
+                    '<button class="me-btn-enviar" onclick="confirmarEnvioWhatsApp()">' +
+                        '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>' +
+                        ' Enviar Pedido pelo WhatsApp' +
+                    '</button>' +
+                    '<button class="me-btn-voltar" onclick="fecharModalEntrega()">← Voltar para a sacola</button>' +
+                '</div>' +
+            '</div>';
+        document.body.appendChild(m);
+    }
+
+    // Fechar sacola e abrir modal
+    fecharSacola();
+    setTimeout(function() {
+        document.getElementById('modalEntrega').classList.add('aberto');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('meNome').focus();
+    }, 200);
+}
+
+function fecharModalEntrega() {
+    const m = document.getElementById('modalEntrega');
+    if (m) {
+        m.classList.remove('aberto');
+        document.body.style.overflow = '';
+    }
+}
+
+function mascararCep(input) {
+    var v = input.value.replace(/\D/g, '').slice(0, 8);
+    if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+    input.value = v;
+}
+
+function confirmarEnvioWhatsApp() {
+    var nome       = (document.getElementById('meNome').value || '').trim();
+    var sobrenome  = (document.getElementById('meSobrenome').value || '').trim();
+    var endereco   = (document.getElementById('meEndereco').value || '').trim();
+    var cep        = (document.getElementById('meCep').value || '').trim();
+    var numero     = (document.getElementById('meNumero').value || '').trim();
+    var complemento = (document.getElementById('meComplemento').value || '').trim();
+    var referencia  = (document.getElementById('meReferencia').value || '').trim();
+
+    if (!nome || !sobrenome || !endereco || !cep || !numero) {
+        // Destacar campos obrigatórios vazios
+        ['meNome','meSobrenome','meEndereco','meCep','meNumero'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (!el.value.trim()) {
+                el.style.borderColor = '#e74c3c';
+                el.addEventListener('input', function() { el.style.borderColor = ''; }, { once: true });
+            }
+        });
+        return;
+    }
+
+    fecharModalEntrega();
+    enviarSacolaWhatsApp(nome + ' ' + sobrenome, endereco, cep, numero, complemento, referencia);
+}
+
+// ──────────────────────────────────────────────────
+function enviarSacolaWhatsApp(nomeCliente, endereco, cep, numero, complemento, referencia) {
     const sacola = getSacola();
     if (!sacola.length) return;
 
     const WHATSAPP_NUMBER = (window.BY_CONFIG && window.BY_CONFIG.numero) || '5583986714216';
-    const SEP = '--------------------';
+    const SEP = '━━━━━━━━━━━━━━━━━━━━';
 
     const lista = sacola.map((item, i) => {
         const partes = [
             (i + 1) + '. *' + item.nome + '*',
-            item.tamanho  ? '   Tamanho: *' + item.tamanho + '*'                                             : '',
-            item.cor      ? '   Cor: *' + item.cor + '*'                                                     : '',
+            item.tamanho  ? '   Tamanho: *' + item.tamanho + '*' : '',
+            item.cor      ? '   Cor: *' + item.cor + '*' : '',
             '   Ref: *' + (item.referencia || item.id) + '*',
             '   Qtd: *' + item.quantidade + (item.quantidade === 1 ? ' unidade' : ' unidades') + '*',
             item.preco    ? '   Valor unit.: *R$ ' + parseFloat(item.preco).toFixed(2).replace('.', ',') + '*' : '',
@@ -372,6 +572,13 @@ function enviarSacolaWhatsApp() {
     const totalValor = sacola.reduce((s, i) => s + (parseFloat(i.preco || 0) * i.quantidade), 0);
     const totalItens = sacola.reduce((s, i) => s + i.quantidade, 0);
 
+    const enderecoFormatado = [
+        '   Rua/Av.: ' + endereco + ', ' + numero,
+        complemento ? '   Complemento: ' + complemento : '',
+        '   CEP: ' + cep,
+        referencia  ? '   Referência: ' + referencia : '',
+    ].filter(Boolean).join('\n');
+
     const rodape = temPreco
         ? '\n*Total estimado: R$ ' + totalValor.toFixed(2).replace('.', ',') + '* (' + totalItens + (totalItens === 1 ? ' item' : ' itens') + ')'
         : '\n*Total: ' + totalItens + (totalItens === 1 ? ' item' : ' itens') + '*';
@@ -380,9 +587,18 @@ function enviarSacolaWhatsApp() {
         'Ola! Gostaria de finalizar meu pedido pela BY Closet.',
         '',
         SEP,
+        '*ITENS DO PEDIDO*',
+        SEP,
         lista,
         SEP,
         rodape,
+        '',
+        SEP,
+        '*DADOS DE ENTREGA*',
+        SEP,
+        '   Cliente: *' + nomeCliente + '*',
+        enderecoFormatado,
+        SEP,
         '',
         'Aguardo confirmacao de disponibilidade e formas de pagamento. Obrigada!',
     ].join('\n');

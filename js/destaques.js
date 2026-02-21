@@ -2,7 +2,7 @@
 // BY Closet - Destaques JavaScript
 // ===================================
 
-const WHATSAPP_NUMBER = '5583986714216';
+var WHATSAPP_NUMBER = (window.BY_CONFIG && window.BY_CONFIG.numero) || '5583986714216';
 const SUPABASE_URL = 'https://qanmqxyfvlqeadvcjswf.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhbm1xeHlmdmxxZWFkdmNqc3dmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzcyNzQsImV4cCI6MjA4NjkxMzI3NH0.YYgr0HxtYhzekcTa97cu-parCGY0gmSrMQHCA-zL7cw';
 
@@ -84,7 +84,7 @@ async function carregarDestaques() {
         const { data, error } = await db
             .from('produtos')
             .select('*')
-            .eq('secao', 'destaques')
+            .eq('destaque', true)
             .order('criado_em', { ascending: false });
 
         if (error) throw error;
@@ -106,6 +106,7 @@ async function carregarDestaques() {
         document.querySelector('.galeria-grid').innerHTML = `
             <div style="grid-column:1/-1;text-align:center;padding:4rem 2rem;color:#6b6b6b;">
                 <h3 style="margin-bottom:0.5rem;">Nenhum destaque cadastrado</h3>
+                <p>Marque a flag "Em Destaque" em qualquer produto no painel administrativo.</p>
             </div>`;
     }
 }
@@ -173,7 +174,7 @@ function renderizarGaleria(produtos) {
         grid.innerHTML = `
             <div style="grid-column:1/-1;text-align:center;padding:4rem 2rem;color:#6b6b6b;">
                 <h3 style="margin-bottom:0.5rem;">Nenhum destaque cadastrado</h3>
-                <p>Adicione produtos com a seção "Destaques" no painel administrativo.</p>
+                <p>Marque a flag "Em Destaque" em qualquer produto no painel administrativo.</p>
             </div>`;
         return;
     }

@@ -1044,11 +1044,6 @@ async function salvarProduto() {
     const nome = document.getElementById('formNome').value.trim();
     const categoria = document.getElementById('formCategoria').value;
     var secao = document.getElementById('formSecao').value;
-    const isDestaque = document.getElementById('formDestaque').checked;
-    if (isDestaque && secao !== 'destaques') {
-        secao = 'destaques';
-        document.getElementById('formSecao').value = 'destaques';
-    }
 
     if (!nome || !categoria || !secao) {
         mostrarToast('Preencha Nome, Categoria e Seção!', 'error');
@@ -1243,20 +1238,8 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
 // Inicializar
 init();
 
-// Sincronizar checkbox "Em Destaque" com seção
-document.getElementById('formDestaque').addEventListener('change', function() {
-    const secaoSelect = document.getElementById('formSecao');
-    if (this.checked) {
-        secaoSelect.value = 'destaques';
-    }
-});
-
-// Ao mudar secao, desmarcar destaque se sair de destaques
-document.getElementById('formSecao').addEventListener('change', function() {
-    if (this.value !== 'destaques') {
-        document.getElementById('formDestaque').checked = false;
-    }
-});
+// Destaque é independente da seção: um produto pode estar em Peças
+// e ainda aparecer na tela de Destaques se a flag estiver marcada
 </script>
 
     <script>
