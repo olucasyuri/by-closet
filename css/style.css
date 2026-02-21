@@ -757,6 +757,24 @@ footer {
         font-size: 1.8rem;
     }
 
+
+    /* Category cards mobile — overlay sempre visível (sem hover em touch) */
+    .category-card .category-overlay {
+        transform: translateY(0);
+        opacity: 1;
+        background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+        padding: 1.5rem;
+    }
+
+    .category-overlay h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .category-overlay p {
+        font-size: 0.82rem;
+        opacity: 0.9;
+    }
     /* Footer */
     .footer-content {
         padding: 0 1.25rem;
