@@ -204,13 +204,13 @@ html {
     font-weight: 400;
 }
 
-.btn-whatsapp-destaque {
+.btn-ver-produto-destaque {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.7rem;
     padding: 1rem 2rem;
-    background: #25D366;
+    background: #d4a5a5;
     color: white;
     border: none;
     border-radius: 50px;
@@ -224,13 +224,13 @@ html {
     max-width: 320px;
 }
 
-.btn-whatsapp-destaque:hover {
+.btn-ver-produto-destaque:hover {
     background: #20ba5a;
     transform: translateY(-2px);
     box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
 }
 
-.btn-whatsapp-destaque svg {
+.btn-ver-produto-destaque svg {
     flex-shrink: 0;
     width: 22px;
     height: 22px;
@@ -411,7 +411,7 @@ html {
         font-size: 0.95rem;
     }
 
-    .btn-whatsapp-destaque {
+    .btn-ver-produto-destaque {
         max-width: 100%;
     }
 
@@ -470,7 +470,7 @@ html {
         font-size: 0.85rem;
     }
 
-    .btn-whatsapp-destaque {
+    .btn-ver-produto-destaque {
         padding: 0.9rem 1.5rem;
         font-size: 0.9rem;
     }

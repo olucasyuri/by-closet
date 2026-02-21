@@ -325,6 +325,7 @@
 
 /* Botão Sacola na tela de produto */
 .btn-sacola-produto {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -349,44 +350,9 @@
     transform: translateY(-1px);
 }
 
-.btn-whatsapp-produto.btn-disabled,
-.btn-whatsapp-produto:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-    transform: none !important;
-    box-shadow: none !important;
-}
 
-.btn-whatsapp-produto {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.8rem;
-    padding: 1.2rem 2rem;
-    background: #25D366;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 1.05rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-}
 
-.btn-whatsapp-produto:hover {
-    background: #20ba5a;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-}
 
-.btn-whatsapp-produto:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    transform: none;
-}
 
 .btn-favoritar {
     width: 60px;
@@ -624,19 +590,14 @@
     }
 
     .btn-sacola-produto {
+    width: 100%;
         flex: 0 0 auto;
         padding: 0.9rem 1rem;
         font-size: 0.85rem;
         min-height: 52px;
     }
 
-    .btn-whatsapp-produto {
-        flex: 1;
-        padding: 0.9rem;
-        font-size: 0.9rem;
-        min-height: 52px;
-    }
-
+    
     /* Relacionados */
     .produtos-relacionados {
         padding: 2.5rem 0;
@@ -688,11 +649,7 @@
     }
 
     .btn-sacola-produto,
-    .btn-whatsapp-produto {
-        width: 100%;
-        flex: unset;
-    }
-
+    
     .relacionados-grid {
         grid-template-columns: repeat(2, 1fr);
     }
