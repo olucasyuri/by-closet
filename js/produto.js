@@ -11,14 +11,24 @@ let tamanhoSelecionado = null;
 let corSelecionada     = null;
 
 async function carregarProduto() {
-    const id = new URLSearchParams(window.location.search).get('id');
-    if (!id) { window.location.href = 'index.html'; return; }
+    const params = new URLSearchParams(window.location.search);
+    const id   = params.get('id');
+    const slug = params.get('slug');
+    if (!id && !slug) { window.location.href = 'index.html'; return; }
     try {
         const { createClient } = supabase;
         const db = createClient(SUPABASE_URL, SUPABASE_KEY);
-        const { data, error } = await db.from('produtos').select('*').eq('id', id).single();
+        let query = db.from('produtos').select('*');
+        if (id)   query = query.eq('id', id);
+        else      query = query.eq('slug', slug);
+        const { data, error } = await query.single();
         if (error) throw error;
         produtoAtual = data;
+        // Canonicalizar URL com slug se disponível
+        if (produtoAtual.slug && !slug) {
+            const nova = window.location.pathname + '?slug=' + produtoAtual.slug;
+            window.history.replaceState(null, '', nova);
+        }
     } catch (e) {
         console.error('Erro:', e);
         window.location.href = 'index.html';
@@ -34,18 +44,29 @@ function renderizarProduto(p) {
     const container = document.getElementById('produtoContainer');
     const imagens   = Array.isArray(p.imagens) ? p.imagens : [p.imagens];
 
-    // Galeria
-    var gal = '<div class="produto-galeria"><div class="imagem-principal">'
-            + '<img src="' + imagens[0] + '" alt="' + (p.nome||'') + '" id="imagemPrincipal"></div>';
+    // Galeria com swipe mobile + zoom desktop
+    var thumbsHtml = '';
     if (imagens.length > 1) {
-        gal += '<div class="thumbnails">';
+        thumbsHtml = '<div class="thumbnails">';
         for (var t = 0; t < imagens.length; t++) {
-            gal += '<div class="thumbnail ' + (t===0?'active':'') + '" onclick="trocarImagem(\'' + imagens[t] + '\',' + t + ')">'
-                 + '<img src="' + imagens[t] + '" alt="foto ' + (t+1) + '"></div>';
+            thumbsHtml += '<div class="thumbnail ' + (t===0?'active':'') + '" onclick="trocarImagem(\'' + imagens[t] + '\',' + t + ')">'
+                        + '<img src="' + imagens[t] + '" alt="foto ' + (t+1) + '"></div>';
         }
-        gal += '</div>';
+        thumbsHtml += '</div>';
     }
-    gal += '</div>';
+
+    var navBtns = imagens.length > 1
+        ? '<button class="gal-nav gal-prev" onclick="navegarGaleria(-1)" aria-label="Anterior">&#8249;</button>'
+        + '<button class="gal-nav gal-next" onclick="navegarGaleria(1)" aria-label="Próxima">&#8250;</button>'
+        : '';
+
+    var gal = '<div class="produto-galeria">'
+            + '<div class="imagem-principal" id="galeriaWrapper">'
+            + '<img src="' + imagens[0] + '" alt="' + (p.nome||'') + '" id="imagemPrincipal" title="Clique para ampliar">'
+            + navBtns
+            + '</div>'
+            + thumbsHtml
+            + '</div>';
 
     // Info
     var inf = '<div class="produto-info">'
@@ -67,7 +88,13 @@ function renderizarProduto(p) {
     // Opcoes
     inf += '<div class="selecao-opcoes">';
     if (p.tamanhos && p.tamanhos.length > 0) {
-        inf += '<div class="opcao-grupo"><span class="opcao-label">Selecione o Tamanho:</span><div class="tamanhos-grid">';
+        var catMed = p.categoria || 'blusas';
+        inf += '<div class="opcao-grupo">';
+        inf += '<div class="opcao-label-row">';
+        inf += '<span class="opcao-label">Selecione o Tamanho:</span>';
+        inf += '<button class="btn-guia-medidas" onclick="abrirGuiaMedidas(\'' + catMed + '\')">📏 Guia de medidas</button>';
+        inf += '</div>';
+        inf += '<div class="tamanhos-grid">';
         for (var i = 0; i < p.tamanhos.length; i++) {
             var tam = p.tamanhos[i];
             inf += '<div class="tamanho-opcao">'
@@ -117,16 +144,230 @@ function renderizarProduto(p) {
     inf += '</div>';
 
     container.innerHTML = '<div class="produto-grid">' + gal + inf + '</div>';
-    document.title = (p.nome || 'Produto') + ' - BY Closet';
+    atualizarMetaTags(p);
+    renderizarBreadcrumb(p);
     window.produtoImagens = imagens;
+    galeriaIndexAtual = 0;
     atualizarBotoes();
+    setTimeout(inicializarGaleria, 50);
 }
 
+
+// Atualizar Open Graph e meta tags com dados do produto
+
+function renderizarBreadcrumb(p) {
+    var container = document.getElementById('breadcrumbContainer');
+    if (!container) return;
+    var secaoNome = { pecas: 'Peças', extras: 'Extras', destaques: 'Destaques' };
+    var secaoUrl  = { pecas: 'pecas.html', extras: 'extras.html', destaques: 'destaques.html' };
+    var secao = p.secao || 'pecas';
+    var cat   = p.categoria ? p.categoria.charAt(0).toUpperCase() + p.categoria.slice(1) : '';
+    container.innerHTML =
+        '<a href="index.html">Início</a>' +
+        '<span>›</span>' +
+        '<a href="' + (secaoUrl[secao] || 'pecas.html') + '">' + (secaoNome[secao] || 'Peças') + '</a>' +
+        (cat ? '<span>›</span><span>' + cat + '</span>' : '') +
+        '<span>›</span>' +
+        '<span class="bc-atual">' + (p.nome || '') + '</span>';
+}
+
+function atualizarMetaTags(p) {
+    const img   = Array.isArray(p.imagens) ? p.imagens[0] : p.imagens;
+    const preco = p.preco ? ' · R$ ' + parseFloat(p.preco).toFixed(2).replace('.', ',') : '';
+    const desc  = (p.descricao || '').slice(0, 160) || ('Confira ' + p.nome + ' na BY Closet. Moda feminina com elegância e qualidade.');
+    const url   = window.location.href;
+    const title = p.nome + ' — BY Closet' + preco;
+
+    document.title = title;
+
+    function setMeta(sel, val) {
+        var el = document.querySelector(sel);
+        if (el) el.setAttribute(el.hasAttribute('content') ? 'content' : 'value', val);
+    }
+    setMeta('meta[property="og:title"]',       title);
+    setMeta('meta[property="og:description"]', desc);
+    setMeta('meta[property="og:image"]',       img || '');
+    setMeta('meta[property="og:url"]',         url);
+    setMeta('meta[name="twitter:title"]',      title);
+    setMeta('meta[name="twitter:description"]',desc);
+    setMeta('meta[name="twitter:image"]',      img || '');
+    setMeta('meta[name="description"]',        desc);
+}
+
+var galeriaIndexAtual = 0;
+
 function trocarImagem(src, index) {
-    document.getElementById('imagemPrincipal').src = src;
+    galeriaIndexAtual = index;
+    var img = document.getElementById('imagemPrincipal');
+    if (img) {
+        img.style.opacity = '0';
+        img.src = src;
+        img.onload = function() { img.style.opacity = '1'; };
+    }
     document.querySelectorAll('.thumbnail').forEach(function(el, i) {
         el.classList.toggle('active', i === index);
     });
+}
+
+function navegarGaleria(dir) {
+    var imgs = window.produtoImagens || [];
+    if (!imgs.length) return;
+    galeriaIndexAtual = (galeriaIndexAtual + dir + imgs.length) % imgs.length;
+    trocarImagem(imgs[galeriaIndexAtual], galeriaIndexAtual);
+}
+
+// Inicializar swipe e zoom após renderizar
+function inicializarGaleria() {
+    var wrapper = document.getElementById('galeriaWrapper');
+    var img     = document.getElementById('imagemPrincipal');
+    if (!wrapper || !img) return;
+
+    // ── Swipe mobile ──
+    var touchStartX = 0;
+    var touchStartY = 0;
+    wrapper.addEventListener('touchstart', function(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    wrapper.addEventListener('touchend', function(e) {
+        var dx = e.changedTouches[0].clientX - touchStartX;
+        var dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+            navegarGaleria(dx < 0 ? 1 : -1);
+        }
+    }, { passive: true });
+
+    // ── Zoom desktop ao passar o mouse ──
+    img.style.transition = 'transform 0.2s ease, opacity 0.25s';
+    img.style.transformOrigin = '0 0';
+    img.style.cursor = 'zoom-in';
+
+    wrapper.addEventListener('mousemove', function(e) {
+        var rect   = wrapper.getBoundingClientRect();
+        var xPct   = (e.clientX - rect.left) / rect.width;
+        var yPct   = (e.clientY - rect.top)  / rect.height;
+        var escala = 2.2;
+        img.style.transform = 'scale(' + escala + ') translate(' +
+            (-(xPct * 100 * (1 - 1/escala))) + '%, ' +
+            (-(yPct * 100 * (1 - 1/escala))) + '%)';
+    });
+    wrapper.addEventListener('mouseleave', function() {
+        img.style.transform = '';
+        img.style.cursor = 'zoom-in';
+    });
+    wrapper.addEventListener('mouseenter', function() {
+        img.style.cursor = 'crosshair';
+    });
+
+    // ── Double-tap para zoom no mobile ──
+    var lastTap = 0;
+    var zoomAtivo = false;
+    wrapper.addEventListener('touchend', function(e) {
+        var agora = Date.now();
+        if (agora - lastTap < 300) {
+            zoomAtivo = !zoomAtivo;
+            img.style.transform = zoomAtivo ? 'scale(2)' : '';
+            img.style.cursor = zoomAtivo ? 'zoom-out' : 'zoom-in';
+        }
+        lastTap = agora;
+    }, { passive: true });
+}
+
+
+// ===================================
+// GUIA DE MEDIDAS
+// ===================================
+var TABELAS_MEDIDAS = {
+    _padrao: {
+        titulo: 'Guia de Medidas',
+        colunas: ['Tamanho', 'Busto', 'Cintura', 'Quadril'],
+        linhas: [
+            ['PP', '80–84 cm', '62–66 cm', '88–92 cm'],
+            ['P',  '84–88 cm', '66–70 cm', '92–96 cm'],
+            ['M',  '88–92 cm', '70–74 cm', '96–100 cm'],
+            ['G',  '92–96 cm', '74–78 cm', '100–104 cm'],
+            ['GG', '96–100 cm','78–82 cm', '104–108 cm'],
+        ]
+    },
+    calcas: {
+        titulo: 'Guia de Medidas — Calças',
+        colunas: ['Tamanho', 'Cintura', 'Quadril', 'Entreperna'],
+        linhas: [
+            ['36', '66–70 cm', '90–94 cm', '76 cm'],
+            ['38', '70–74 cm', '94–98 cm', '77 cm'],
+            ['40', '74–78 cm', '98–102 cm','78 cm'],
+            ['42', '78–82 cm', '102–106 cm','79 cm'],
+            ['44', '82–86 cm', '106–110 cm','80 cm'],
+            ['46', '86–90 cm', '110–114 cm','81 cm'],
+        ]
+    },
+    vestidos: {
+        titulo: 'Guia de Medidas — Vestidos',
+        colunas: ['Tamanho', 'Busto', 'Cintura', 'Quadril', 'Comprimento'],
+        linhas: [
+            ['PP', '80–84 cm', '62–66 cm', '88–92 cm', '130 cm'],
+            ['P',  '84–88 cm', '66–70 cm', '92–96 cm', '133 cm'],
+            ['M',  '88–92 cm', '70–74 cm', '96–100 cm','136 cm'],
+            ['G',  '92–96 cm', '74–78 cm', '100–104 cm','139 cm'],
+            ['GG', '96–100 cm','78–82 cm', '104–108 cm','142 cm'],
+        ]
+    },
+    saias: {
+        titulo: 'Guia de Medidas — Saias',
+        colunas: ['Tamanho', 'Cintura', 'Quadril', 'Comprimento'],
+        linhas: [
+            ['PP', '62–66 cm', '88–92 cm', '75 cm'],
+            ['P',  '66–70 cm', '92–96 cm', '77 cm'],
+            ['M',  '70–74 cm', '96–100 cm','79 cm'],
+            ['G',  '74–78 cm', '100–104 cm','81 cm'],
+            ['GG', '78–82 cm', '104–108 cm','83 cm'],
+        ]
+    },
+};
+
+function abrirGuiaMedidas(categoria) {
+    var tabela = TABELAS_MEDIDAS[categoria] || TABELAS_MEDIDAS._padrao;
+
+    var thead = '<tr>' + tabela.colunas.map(function(c){ return '<th>' + c + '</th>'; }).join('') + '</tr>';
+    var tbody = tabela.linhas.map(function(linha) {
+        return '<tr>' + linha.map(function(cel, i){
+            return i === 0 ? '<td><strong>' + cel + '</strong></td>' : '<td>' + cel + '</td>';
+        }).join('') + '</tr>';
+    }).join('');
+
+    var modal = document.getElementById('modalMedidas');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modalMedidas';
+        modal.style.cssText = 'position:fixed;inset:0;z-index:99998;display:flex;align-items:center;justify-content:center;padding:1rem;';
+        document.body.appendChild(modal);
+    }
+
+    modal.innerHTML =
+        '<div style="position:absolute;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(3px);" onclick="fecharGuiaMedidas()"></div>' +
+        '<div style="position:relative;background:#fff;border-radius:16px;width:min(580px,100%);max-height:90svh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);padding:0;">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #f0ebe5;position:sticky;top:0;background:#fff;z-index:1;">' +
+                '<h3 style="font-family:Cormorant Garamond,serif;font-size:1.3rem;font-weight:400;margin:0;color:#2c2c2c;">📏 ' + tabela.titulo + '</h3>' +
+                '<button onclick="fecharGuiaMedidas()" style="background:#f5f0eb;border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1.1rem;color:#888;display:flex;align-items:center;justify-content:center;">×</button>' +
+            '</div>' +
+            '<div style="padding:1.5rem;">' +
+                '<p style="font-size:0.82rem;color:#888;margin-bottom:1rem;line-height:1.5;">As medidas são aproximadas e podem variar conforme o modelo e tecido da peça.</p>' +
+                '<table style="width:100%;border-collapse:collapse;font-size:0.88rem;">' +
+                    '<thead style="background:#faf7f4;">' + thead + '</thead>' +
+                    '<tbody>' + tbody + '</tbody>' +
+                '</table>' +
+                '<p style="margin-top:1rem;font-size:0.8rem;color:#aaa;">Dica: Em caso de dúvida entre dois tamanhos, prefira o maior.</p>' +
+            '</div>' +
+        '</div>';
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function fecharGuiaMedidas() {
+    var m = document.getElementById('modalMedidas');
+    if (m) m.style.display = 'none';
+    document.body.style.overflow = '';
 }
 
 function selecionarTamanho(t) { tamanhoSelecionado = t; atualizarBotoes(); }

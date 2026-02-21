@@ -415,6 +415,11 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             Destaques
         </div>
+        <span class="nav-label">Vendas</span>
+        <div class="nav-item" onclick="navegarPara('pedidos', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            Pedidos
+        </div>
         <span class="nav-label">Configurações</span>
         <div class="nav-item" onclick="navegarPara('config', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
@@ -499,6 +504,18 @@
             <div class="section-header"><h3>Produtos em Destaque</h3></div>
             <p style="color:var(--text-soft);margin-bottom:1.5rem;font-size:0.9rem;">Aparecem no carrossel principal da página Destaques. Ative o toggle "Em Destaque" em qualquer produto para ele aparecer aqui.</p>
             <div class="produtos-admin-grid" id="destaquesGrid"></div>
+        </div>
+
+        <!-- PEDIDOS -->
+        <div class="page" id="page-pedidos">
+            <div class="section-header" style="margin-bottom:1.5rem;">
+                <h3>Pedidos Recebidos</h3>
+                <button class="btn-secondary" onclick="carregarPedidos()" style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+                    Atualizar
+                </button>
+            </div>
+            <div id="pedidosLista" style="display:flex;flex-direction:column;gap:1rem;"></div>
         </div>
 
         <!-- CONFIG -->
@@ -630,6 +647,12 @@
                     <input type="number" id="formEstoque" placeholder="Ex: 10" min="0" step="1">
                 </div>
                 <div class="form-group">
+                    <label>Ordem de exibição
+                        <span style="font-size:0.72rem;color:var(--text-soft);font-weight:400;"> (1 = primeiro)</span>
+                    </label>
+                    <input type="number" id="formOrdem" placeholder="Ex: 1" min="1" step="1">
+                </div>
+                <div class="form-group">
                     <label>Badge</label>
                     <select id="formBadge">
                         <option value="">Nenhum</option>
@@ -757,6 +780,7 @@ async function carregarProdutos() {
     const { data, error } = await db
         .from('produtos')
         .select('*')
+        .order('ordem', { ascending: true, nullsFirst: false })
         .order('criado_em', { ascending: false });
 
     if (error) throw error;
@@ -880,9 +904,74 @@ function navegarPara(pagina, el) {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('page-' + pagina).classList.add('active');
     el.classList.add('active');
-    const titulos = { dashboard:'Visão Geral', produtos:'Produtos', destaques:'Destaques', config:'Configurações' };
+    const titulos = { dashboard:'Visão Geral', produtos:'Produtos', destaques:'Destaques', pedidos:'Pedidos Recebidos', config:'Configurações' };
     document.getElementById('pageTitle').textContent = titulos[pagina];
     document.getElementById('btnNovo').style.display = pagina === 'produtos' ? 'flex' : 'none';
+    if (pagina === 'pedidos') carregarPedidos();
+}
+
+
+// ===================================
+// PEDIDOS RECEBIDOS
+// ===================================
+async function carregarPedidos() {
+    const el = document.getElementById('pedidosLista');
+    if (!el) return;
+    el.innerHTML = '<p style="color:var(--text-soft);padding:1rem 0;">Carregando pedidos...</p>';
+
+    try {
+        const { data, error } = await db
+            .from('pedidos')
+            .select('*')
+            .order('enviado_em', { ascending: false })
+            .limit(100);
+
+        if (error) throw error;
+
+        if (!data || !data.length) {
+            el.innerHTML = `<div class="empty-state">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                <h3>Nenhum pedido ainda</h3>
+                <p>Os pedidos enviados pelo WhatsApp aparecerão aqui</p>
+            </div>`;
+            return;
+        }
+
+        el.innerHTML = data.map(function(p) {
+            var itens = [];
+            try { itens = JSON.parse(p.itens || '[]'); } catch(e) {}
+            var data_fmt = p.enviado_em ? new Date(p.enviado_em).toLocaleString('pt-BR') : '—';
+            var total_fmt = p.total_valor ? 'R$ ' + parseFloat(p.total_valor).toFixed(2).replace('.', ',') : '—';
+            var itens_html = itens.map(function(i) {
+                return '<span style="display:inline-block;background:#faf7f4;border:1px solid #f0ebe5;border-radius:6px;padding:0.2rem 0.5rem;font-size:0.76rem;margin:0.15rem;">' +
+                    (i.nome||'') + (i.tamanho ? ' · ' + i.tamanho : '') + (i.cor ? ' · ' + i.cor : '') +
+                    ' <strong>×' + (i.quantidade||1) + '</strong>' + '</span>';
+            }).join('');
+
+            return `<div style="background:#fff;border-radius:12px;padding:1.25rem 1.5rem;box-shadow:var(--shadow);border-left:3px solid var(--rose);">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+                    <div>
+                        <div style="font-weight:600;font-size:0.95rem;color:var(--text);margin-bottom:0.2rem;">
+                            ${p.cliente_nome || 'Cliente não identificado'}
+                        </div>
+                        <div style="font-size:0.78rem;color:var(--text-soft);">${data_fmt}</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:#b07070;">${total_fmt}</div>
+                        <div style="font-size:0.75rem;color:var(--text-soft);">${p.total_itens || 0} ${p.total_itens === 1 ? 'item' : 'itens'}</div>
+                    </div>
+                </div>
+                ${p.endereco ? `<div style="font-size:0.82rem;color:var(--text-soft);margin-bottom:0.6rem;">
+                    📍 ${p.endereco}${p.cep ? ' · CEP ' + p.cep : ''}${p.referencia_entrega ? ' · Ref: ' + p.referencia_entrega : ''}
+                </div>` : ''}
+                <div style="margin-top:0.5rem;">${itens_html}</div>
+            </div>`;
+        }).join('');
+    } catch(err) {
+        el.innerHTML = '<div style="background:rgba(231,76,60,0.08);border-radius:10px;padding:1.25rem;color:#e74c3c;font-size:0.88rem;">' +
+            '⚠️ Erro ao carregar pedidos. A tabela "pedidos" pode não existir ainda no Supabase. ' +
+            'Adicione o SQL de migração para criá-la.</div>';
+    }
 }
 
 // ===================================
@@ -909,6 +998,7 @@ function abrirModalNovo() {
     document.getElementById('formPreco').value = '';
     document.getElementById('formReferencia').value = '';
     document.getElementById('formEstoque').value = '';
+    document.getElementById('formOrdem').value = '';
     document.getElementById('formCategoria').value = '';
     document.getElementById('formSecao').value = '';
     document.getElementById('formBadge').value = '';
@@ -940,6 +1030,7 @@ function editarProduto(id) {
     document.getElementById('formPreco').value = p.preco || '';
     document.getElementById('formReferencia').value = p.referencia || '';
     document.getElementById('formEstoque').value = (p.estoque !== null && p.estoque !== undefined) ? p.estoque : '';
+    document.getElementById('formOrdem').value = p.ordem || '';
     document.getElementById('formBadge').value = p.badge || '';
     document.getElementById('formDestaque').checked = !!p.destaque;
     document.getElementById('formNovo').checked = !!p.novo;
@@ -1039,6 +1130,21 @@ function removerImagem(index) {
 
 // ===================================
 // SALVAR PRODUTO
+
+// ===================================
+// GERAR SLUG AMIGÁVEL
+// ===================================
+function gerarSlug(nome) {
+    return nome
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remover acentos
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .slice(0, 80);
+}
+
 // ===================================
 async function salvarProduto() {
     const nome = document.getElementById('formNome').value.trim();
@@ -1058,8 +1164,10 @@ async function salvarProduto() {
     btn.disabled = true;
     btn.innerHTML = '⏳ Salvando...';
 
+    const slug = gerarSlug(nome);
     const dados = {
         nome,
+        slug,
         categoria,
         secao,
         descricao: document.getElementById('formDescricao').value,
@@ -1071,6 +1179,7 @@ async function salvarProduto() {
         preco: parseFloat(document.getElementById('formPreco').value) || null,
         referencia: document.getElementById('formReferencia').value.trim() || null,
         estoque: document.getElementById('formEstoque').value !== '' ? parseInt(document.getElementById('formEstoque').value) : null,
+        ordem: document.getElementById('formOrdem').value !== '' ? parseInt(document.getElementById('formOrdem').value) : null,
         badge: document.getElementById('formBadge').value || null,
         destaque: document.getElementById('formDestaque').checked,
         novo: document.getElementById('formNovo').checked,

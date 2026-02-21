@@ -62,7 +62,9 @@ async function carregarProdutos() {
     try {
         const { createClient } = supabase;
         const db = createClient(SUPABASE_URL, SUPABASE_KEY);
-        let query = db.from('produtos').select('*').order('criado_em', { ascending: false });
+        let query = db.from('produtos').select('*')
+            .order('ordem', { ascending: true, nullsFirst: false })
+            .order('criado_em', { ascending: false });
         if (secao) query = query.eq('secao', secao);
         const { data, error } = await query;
         if (error) throw error;
@@ -310,10 +312,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (select) {
         select.addEventListener('change', function() {
             var ord = this.value;
-            if      (ord === 'nome-az')   produtosFiltrados.sort(function(a,b) { return a.nome.localeCompare(b.nome); });
-            else if (ord === 'nome-za')   produtosFiltrados.sort(function(a,b) { return b.nome.localeCompare(a.nome); });
-            else if (ord === 'novidades') produtosFiltrados.sort(function(a,b) { return (b.novo ? 1 : 0) - (a.novo ? 1 : 0); });
-            else                          produtosFiltrados = [...todosProdutos];
+            if      (ord === 'nome-az')    produtosFiltrados.sort(function(a,b) { return a.nome.localeCompare(b.nome); });
+            else if (ord === 'nome-za')    produtosFiltrados.sort(function(a,b) { return b.nome.localeCompare(a.nome); });
+            else if (ord === 'novidades')  produtosFiltrados.sort(function(a,b) { return (b.novo ? 1 : 0) - (a.novo ? 1 : 0); });
+            else if (ord === 'preco-asc')  produtosFiltrados.sort(function(a,b) { return (parseFloat(a.preco)||0) - (parseFloat(b.preco)||0); });
+            else if (ord === 'preco-desc') produtosFiltrados.sort(function(a,b) { return (parseFloat(b.preco)||0) - (parseFloat(a.preco)||0); });
+            else                           produtosFiltrados = [...todosProdutos];
             paginaAtual = 1;
             renderizarProdutos();
             renderizarPaginacao();

@@ -51,9 +51,13 @@ function removerDaSacola(idx) {
 
 function alterarQuantidade(idx, delta) {
     const sacola = getSacola();
-    sacola[idx].quantidade = Math.max(1, (sacola[idx].quantidade || 1) + delta);
+    const novaQtd = Math.max(1, (sacola[idx].quantidade || 1) + delta);
+    sacola[idx].quantidade = novaQtd;
     salvarSacola(sacola);
     renderizarPainelSacola();
+    // Manter scroll position no drawer
+    const itensEl = document.getElementById('sacolaItens');
+    if (itensEl) itensEl.scrollTop = itensEl._scrollTop || 0;
 }
 
 function limparSacola() {
@@ -373,6 +377,8 @@ function renderizarPainelSacola() {
     const itensEl = document.getElementById('sacolaItens');
     const footerEl = document.getElementById('sacolaFooter');
     if (!itensEl) return;
+    // Salvar posição do scroll para não pular ao alterar quantidade
+    if (itensEl) itensEl._scrollTop = itensEl.scrollTop;
 
     if (sacola.length === 0) {
         itensEl.innerHTML = `
@@ -604,6 +610,27 @@ function enviarSacolaWhatsApp(nomeCliente, endereco, cep, numero, complemento, r
     ].join('\n');
 
     window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(mensagem), '_blank');
+
+    // Registrar pedido no Supabase para relatório
+    try {
+        var _sb = (typeof supabase !== 'undefined') ? supabase.createClient(
+            'https://qanmqxyfvlqeadvcjswf.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhbm1xeHlmdmxxZWFkdmNqc3dmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMzcyNzQsImV4cCI6MjA4NjkxMzI3NH0.YYgr0HxtYhzekcTa97cu-parCGY0gmSrMQHCA-zL7cw'
+        ) : null;
+        if (_sb) {
+            _sb.from('pedidos').insert([{
+                cliente_nome: nomeCliente || null,
+                endereco: (endereco || '') + (numero ? ', ' + numero : '') + (complemento ? ' - ' + complemento : ''),
+                cep: cep || null,
+                referencia_entrega: referencia || null,
+                itens: JSON.stringify(getSacola()),
+                total_itens: getSacola().reduce(function(s,i){ return s + i.quantidade; }, 0),
+                total_valor: getSacola().reduce(function(s,i){ return s + (parseFloat(i.preco||0)*i.quantidade); }, 0) || null,
+                status: 'recebido',
+                enviado_em: new Date().toISOString()
+            }]);
+        }
+    } catch(e) { /* silencioso */ }
 }
 
 // ===================================

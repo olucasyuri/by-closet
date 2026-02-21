@@ -1,4 +1,111 @@
 
+/* ── Guia de medidas ── */
+.opcao-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+}
+.opcao-label-row .opcao-label {
+    margin-bottom: 0;
+}
+.btn-guia-medidas {
+    background: none;
+    border: 1px solid #e8ddd3;
+    border-radius: 20px;
+    padding: 0.3rem 0.75rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    color: #b07070;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.btn-guia-medidas:hover {
+    background: #faf7f4;
+    border-color: #d4a5a5;
+}
+#modalMedidas table th {
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-bottom: 1px solid #f0ebe5;
+}
+#modalMedidas table td {
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid #faf7f4;
+    color: #2c2c2c;
+}
+#modalMedidas table tbody tr:hover { background: #faf7f4; }
+
+/* ── Galeria melhorada ── */
+.imagem-principal {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #f5f0eb;
+    cursor: zoom-in;
+}
+.imagem-principal #imagemPrincipal {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.25s, transform 0.2s ease;
+    transform-origin: 0 0;
+}
+
+/* Botões de navegação da galeria */
+.gal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.92);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 5;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    transition: background 0.2s, opacity 0.2s;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2c2c2c;
+}
+.imagem-principal:hover .gal-nav { opacity: 1; }
+.gal-prev { left: 10px; }
+.gal-next { right: 10px; }
+.gal-nav:hover { background: #fff; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+
+/* Mobile: nav sempre visível */
+@media (max-width: 768px) {
+    .gal-nav { opacity: 0.85; width: 34px; height: 34px; font-size: 1.2rem; }
+    .gal-prev { left: 8px; }
+    .gal-next { right: 8px; }
+    .imagem-principal { cursor: default; }
+}
+
+/* Breadcrumb */
+#breadcrumbContainer a {
+    color: #b07070;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+#breadcrumbContainer a:hover { color: #d4a5a5; }
+#breadcrumbContainer span { color: #bbb; }
+#breadcrumbContainer .bc-atual { color: #2c2c2c; font-weight: 500; }
+
 /* Grupo de ações no nav (sacola + favoritos) */
 .nav-acoes {
     display: flex;
