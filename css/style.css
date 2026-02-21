@@ -776,12 +776,11 @@ footer {
 
 @media (max-width: 480px) {
     .hero-image {
-        height: 62vw;
-        min-height: 240px;
+        flex: 0 0 60svh;
     }
 
     .hero-text h1 {
-        font-size: 1.65rem;
+        font-size: 1.6rem;
     }
 
     .category-grid {
