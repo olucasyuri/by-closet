@@ -289,6 +289,7 @@ nav {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top center;
 }
 
 /* Hero Carousel — múltiplas imagens empilhadas, só a .active aparece */
@@ -298,6 +299,7 @@ nav {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top center;
     opacity: 0;
     transition: opacity 0.8s ease;
     pointer-events: none;
@@ -659,61 +661,77 @@ footer {
         min-height: 44px;
     }
 
-    /* Hero mobile — imagem em cima, texto embaixo */
+    /* Hero mobile — imagem grande e visível, texto abaixo */
     .hero {
         height: auto;
         min-height: 100svh;
         margin-top: 0;
         padding-top: 70px;
+        display: flex;
+        flex-direction: column;
     }
 
     .hero-content {
-        flex-direction: column-reverse;
-        padding: 0 1.25rem 2rem;
+        flex-direction: column;
+        padding: 0;
         gap: 0;
-        min-height: calc(100svh - 70px);
-        justify-content: flex-end;
-        align-items: center;
+        flex: 1;
+        justify-content: flex-start;
+        align-items: stretch;
+        min-height: 0;
     }
 
-    /* Imagem ocupa boa parte do topo */
+    /* Imagem ocupa a parte superior — grande e com rosto visível */
     .hero-image {
         width: 100%;
         flex: 0 0 auto;
+        height: 58vw;
+        min-height: 260px;
+        max-height: 420px;
+        position: relative;
     }
 
     .hero-image-container {
         width: 100%;
+        height: 100%;
         max-width: 100%;
-        height: 55vw;
-        min-height: 240px;
-        max-height: 360px;
-        margin: 0 auto;
-        border-radius: 0 0 20px 20px;
+        border-radius: 0;
+        box-shadow: none;
     }
 
-    /* Texto compacto abaixo da imagem */
+    /* object-position para mostrar o rosto, não cortar */
+    .hero-image-container .hero-slide,
+    .hero-image-container img {
+        object-position: top center;
+    }
+
+    /* Texto abaixo da imagem, compacto e centralizado */
     .hero-text {
         width: 100%;
-        padding: 1.5rem 0 1rem;
+        padding: 1.25rem 1.5rem 1.5rem;
         text-align: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .hero-text h1 {
-        font-size: 2rem;
-        line-height: 1.15;
-        margin-bottom: 0.6rem;
+        font-size: 1.85rem;
+        line-height: 1.2;
+        margin-bottom: 0.5rem;
     }
 
     .hero-text p {
-        font-size: 0.95rem;
-        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        margin-bottom: 1.25rem;
     }
 
     .cta-button {
-        display: block;
+        display: inline-block;
         text-align: center;
-        padding: 0.9rem 2rem;
+        padding: 0.85rem 2rem;
+        align-self: center;
     }
 
     .hero-dots {
@@ -757,13 +775,13 @@ footer {
 }
 
 @media (max-width: 480px) {
-    .hero-image-container {
-        height: 60vw;
-        min-height: 220px;
+    .hero-image {
+        height: 62vw;
+        min-height: 240px;
     }
 
     .hero-text h1 {
-        font-size: 1.75rem;
+        font-size: 1.65rem;
     }
 
     .category-grid {

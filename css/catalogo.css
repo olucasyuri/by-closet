@@ -815,30 +815,31 @@
         display: none; /* Esconde descrição no mobile para não sobrecarregar */
     }
 
+    /* Botões sempre em coluna no mobile — WhatsApp abaixo da Sacola */
     .card-btns {
-        flex-direction: column;
-        gap: 0.5rem;
+        flex-direction: column !important;
+        gap: 0.4rem;
     }
 
     .btn-sacola-card {
         width: 100%;
         justify-content: center;
-        padding: 0.6rem;
-        font-size: 0.75rem;
-        min-height: 38px;
+        padding: 0.65rem 0.5rem;
+        font-size: 0.76rem;
+        min-height: 40px;
     }
 
-    /* WhatsApp bem visível no mobile */
     .btn-whatsapp {
         width: 100%;
         justify-content: center;
-        padding: 0.75rem;
-        font-size: 0.82rem;
+        padding: 0.7rem 0.5rem;
+        font-size: 0.8rem;
         min-height: 44px;
         font-weight: 600;
-        background: #25D366;
+        background: #25D366 !important;
+        color: white !important;
         border-radius: 8px;
-        letter-spacing: 0.2px;
+        flex: unset !important;
     }
 
     /* Paginação */
@@ -887,19 +888,22 @@
         font-size: 0.82rem;
     }
 
+    /* Em 480px (1 coluna) os cards são mais largos, pode lado a lado */
     .card-btns {
-        flex-direction: row;
+        flex-direction: row !important;
         gap: 0.5rem;
     }
 
     .btn-sacola-card {
-        flex: 0 0 auto;
+        flex: 0 0 auto !important;
         padding: 0.75rem 1rem;
+        width: auto;
     }
 
     .btn-whatsapp {
-        flex: 1;
+        flex: 1 !important;
         padding: 0.75rem;
         min-height: 44px;
+        width: auto;
     }
 }
