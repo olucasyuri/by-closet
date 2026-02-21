@@ -146,11 +146,8 @@ function renderizarProdutos() {
             + estoqueHtml
             + '<p class="produto-descricao">' + (produto.descricao || '').substring(0, 80) + ((produto.descricao || '').length > 80 ? '...' : '') + '</p>'
             + '<div class="card-btns">'
-            + '<button class="btn-sacola-card" onclick="event.stopPropagation(); irParaProdutoSacola(\'' + produto.id + '\')">'
-            + sacolaIconSVG + ' Sacola'
-            + '</button>'
-            + '<button class="btn-whatsapp" onclick="event.stopPropagation(); abrirWhatsApp(\'' + nomeEscapado + '\', \'' + imagem + '\')">'
-            + whatsappSVG + ' WhatsApp'
+            + '<button class="btn-sacola-card btn-sacola-full" onclick="event.stopPropagation(); irParaProdutoSacola(\'' + produto.id + '\')">'
+            + sacolaIconSVG + ' Adicionar à Sacola'
             + '</button>'
             + '</div>'
             + '</div>'
